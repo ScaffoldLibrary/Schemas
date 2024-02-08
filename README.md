@@ -64,7 +64,7 @@
       <ul>
         <li><a href="#basics">Basics</a></li>
         <li><a href="#creating-schemas">Creating Schemas</a></li>
-        <li><a href="#accessing/using-schemas">Using Schemas</a></li>
+        <li><a href="#using-schemas">Using Schemas</a></li>
         <li><a href="#attributes">Attributes</a></li>
         <li><a href="#custom-drawers">Custom Drawers</a></li>
       </ul>
@@ -155,7 +155,7 @@ To create a `Schema` all you *REALLY* need to do is inherit from `Schema`. It wi
 
 ![](images/screenshot_04.png)
 
-### Accessing/Using Schemas
+### Using Schemas
 
 Your `SchemaObject` holds the reference to any schema that you may have added to it! usage is very similar to what you would experience with `MonoBehaviours`
 
