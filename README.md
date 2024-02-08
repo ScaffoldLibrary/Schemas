@@ -53,23 +53,25 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#basics">Basics</a></li>
+        <li><a href="#creating-schemas">Creating Schemas</a></li>
+        <li><a href="#accessing/using-schemas">Using Schemas</a></li>
+        <li><a href="#attributes">Attributes</a></li>
+        <li><a href="#custom-drawers">Custom Drawers</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -78,59 +80,41 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://github.com/ScaffoldLibrary/Schemas)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+Have you ever found yourself wanting to add Components to ScriptableObjects?<br>
+Or maybe hold a polymorphic list, to hold all those cool abstract effects?
+<br>
+Or at the very least, have different data compositions without relaying on inheritance!
+
+Schemas is here to help! a quick, plug-and-play way to add simple data structures to your objects.
+
+Just inherit from SchemaObject instead of ScriptableObject, and that's it! you got yourself schemas.
+
+```
+public class SampleObject : SchemaObject
+{
+
+}
+```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-### Built With
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Schemas have no dependencies and no pre-requesities, just install and start to create right away! It's completely self-contained.
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
+1. You can also install via git url by adding this entry in your manifest.json
+```
+"com.scaffold.schemas": "https://https://github.com/ScaffoldLibrary/Schemas.git"
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -138,23 +122,210 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### Basics
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+Schemas is based on 2 main classes, the `SchemaObject` and the `Schema`.
+
+The `SchemaObject` is pretty much a wrapper around ScriptableObject to hold and access whatever Schema you may want. All that is needed is for your `ScriptableObjects` to start Inherting from `SchemaObjects` and it's good to go!
+
+
+```
+public class SampleObject : SchemaObject
+{
+  //nothing else needed!
+}
+```
+
+The `Schema` itself is just a base class, just like all your components inherit from `MonoBehaviour`. It has basically no functionality other than providing a reference/base type for the system.
+
+There is no rules for what type of data you will put in your schema, it really is just a data-holder.
+
+The reason we have a empty `Schema` class instead of a Interface is to avoid developers trying to put MonoBehaviours or SO's as schemas, As we are leveraging unity's SerializeReference which does not support reference to those types. 
+
+```
+public class SampleSchema : Schema
+{
+  //any variable can go in here
+}
+```
+
+### Creating Schemas
+
+To create a `Schema` all you *REALLY* need to do is inherit from `Schema`. It will automatically appear on the dropdown options.
+
+![](images/screenshot_04.png)
+
+### Accessing/Using Schemas
+
+Your `SchemaObject` holds the reference to any schema that you may have added to it! usage is very similar to what you would experience with `MonoBehaviours`
+
+*MonoBehaviours*:
+```
+    public void SomeMethod(GameObject myObj)
+    {
+        SampleComponent component = myObj.GetComponent<SampleComponent>();
+        if(component != null)
+        {
+            //do something with component
+        }
+    }
+```
+
+*Schemas*:
+```
+    public void SomeMethod(SchemaObject myObj)
+    {
+        SampleSchema schema = myObj.GetSchema<SampleSchema>();
+        if(schema != null)
+        {
+            //do something with schema
+        }
+    }
+```
+
+### Attributes
+
+To help customize your schemas, there are 3 utility attributes
+
+`SchemaDescriptionAttribute`: Will provide a tooltip description for your schema
+
+```
+[SchemaDescription("Add/Subtract values from player stats while equipped")]
+public class Modifiers : CardTrait
+{
+
+}
+```
+![](images/screenshot_05.png)
+<br>
+<br>
+<br>
+`SchemaMenuGroupAttribute`: Will group your schemas on the "Add Schema" dropdown
+
+```
+[SchemaMenuGroup("MyGroup")]
+public class Breakable : Schema
+{
+
+}
+```
+![](images/screenshot_06.png)
+<br>
+<br>
+<br>
+`SchemaCustomDrawerAttribute`: Mark a class to be used as a custom drawer for a schema
+
+```
+[SchemaCustomDrawer(typeof(Modifiers))]
+public class ModifierSchemaDrawer : SchemaDrawer
+{
+
+}
+```
+
+### Custom Drawers
+
+#### For SchemaObjects
+
+SchemaObjects already use a custom drawer by default, when you inherit from `SchemaObjects` it will first draw all the variables of your custom object, and only draw the `Schemas` in the end.
+
+a Overridable version of `SchemaObjectEditor` is being tested and should be released soon.
+
+#### For Schemas
+
+Through the custom inspector of `SchemaObjects`, `Schemas` are not drawn as any Property with a PropertyDrawer, but with a custom Drawer leveraging unity's `GUILayout` and `EditorGUILayout`
+
+to create a custom drawer for a Schema, you can simply create a class inheriting from `SchemaDrawer` and apply the attribute:
+
+```
+[SchemaMenuGroup("CardTrait")]
+[SchemaDescription("Add/Subtract values from player stats while equipped")]
+public class Modifiers : CardTrait
+{
+
+    public List<StatModifier> changes = new List<StatModifier>();
+
+    [Serializable]
+    public class StatModifier
+    {
+        public Stats Stat;
+        public int Value;
+    }
+}
+
+[SchemaCustomDrawer(typeof(Modifiers))]
+public class ModifierSchemaDrawer : SchemaDrawer
+{
+    public ModifierSchemaDrawer(SerializedProperty property, SchemaObjectEditor editor) : base(property, editor)
+    {
+
+    }
+
+    private SerializedProperty modifiersProp;
+
+    public override void UpdateSerializedProperty(SerializedProperty property)
+    {
+        base.UpdateSerializedProperty(property);
+        modifiersProp = property.FindPropertyRelative("changes");
+    }
+
+    public override void DrawBody()
+    {
+        EditorGUILayout.Space(3);
+        for (int i = 0; i < modifiersProp.arraySize; i++)
+        {
+            var prop = modifiersProp.GetArrayElementAtIndex(i);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(prop.FindPropertyRelative("Stat"), GUIContent.none);
+            EditorGUILayout.PropertyField(prop.FindPropertyRelative("Value"), GUIContent.none);
+            if (GUILayout.Button("X", GUILayout.Width(30)))
+            {
+                RemoveModifier(i);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        if (GUILayout.Button("Add"))
+        {
+            AddModifier();
+        }
+        EditorGUILayout.Space(3);
+    }
+
+    private void AddModifier()
+    {
+        var index = modifiersProp.arraySize;
+        modifiersProp.InsertArrayElementAtIndex(index);
+        modifiersProp.GetArrayElementAtIndex(index).boxedValue = new Modifiers.StatModifier();
+        Editor.Refresh();
+    }
+
+    private void RemoveModifier(int propIndex)
+    {
+        modifiersProp.DeleteArrayElementAtIndex(propIndex);
+        Editor.Refresh();
+    }
+}
+
+
+```
+
+`SchemaDrawer` can override a few options like the Header and Body, to create custom views:
+
+
+![](images/screenshot_03.png)
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [ ] Multi-Editing support
+- [ ] expose non-generic public methods
+- [ ] Support for custom SchemaObject editors
+- [ ] Better dropdown for adding schemas
+- [ ] Option to filter schema options on dropdown based on type
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -190,40 +361,28 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Matheus Cohen - matheuscohen@hotmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
+Project Link: [https://github.com/MgCohen/Schemas](https://github.com/MgCohen/Schemas)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/MgCohen/Schemas.svg?style=for-the-badge
+[contributors-url]: https://github.com/MgCohen/Schemas/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/MgCohen/Schemas.svg?style=for-the-badge
+[forks-url]: https://github.com/MgCohen/Schemas/network/members
+[stars-shield]: https://img.shields.io/github/stars/MgCohen/Schemas.svg?style=for-the-badge
+[stars-url]: https://github.com/MgCohen/Schemas/stargazers
+[issues-shield]: https://img.shields.io/github/issues/MgCohen/Schemas.svg?style=for-the-badge
+[issues-url]: https://github.com/MgCohen/Schemas/issues
+[license-shield]: https://img.shields.io/github/license/MgCohen/Schemas.svg?style=for-the-badge
+[license-url]: https://github.com/MgCohen/Schemas/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
+[linkedin-url]: https://linkedin.com/in/matheus-cohen
+[product-screenshot]: images/gif_01.gif
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
