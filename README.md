@@ -370,16 +370,16 @@ Project Link: [https://github.com/MgCohen/Schemas](https://github.com/MgCohen/Sc
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/MgCohen/Schemas.svg?style=for-the-badge
-[contributors-url]: https://github.com/MgCohen/Schemas/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/MgCohen/Schemas.svg?style=for-the-badge
-[forks-url]: https://github.com/MgCohen/Schemas/network/members
-[stars-shield]: https://img.shields.io/github/stars/MgCohen/Schemas.svg?style=for-the-badge
-[stars-url]: https://github.com/MgCohen/Schemas/stargazers
-[issues-shield]: https://img.shields.io/github/issues/MgCohen/Schemas.svg?style=for-the-badge
-[issues-url]: https://github.com/MgCohen/Schemas/issues
-[license-shield]: https://img.shields.io/github/license/MgCohen/Schemas.svg?style=for-the-badge
-[license-url]: https://github.com/MgCohen/Schemas/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/ScaffoldLibrary/Schemas.svg?style=for-the-badge
+[contributors-url]: https://github.com/ScaffoldLibrary/Schemas/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ScaffoldLibrary/Schemas.svg?style=for-the-badge
+[forks-url]: https://github.com/ScaffoldLibrary/Schemas/network/members
+[stars-shield]: https://img.shields.io/github/stars/ScaffoldLibrary/Schemas.svg?style=for-the-badge
+[stars-url]: https://github.com/ScaffoldLibrary/Schemas/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ScaffoldLibrary/Schemas.svg?style=for-the-badge
+[issues-url]: https://github.com/ScaffoldLibrary/Schemas/issues
+[license-shield]: https://img.shields.io/github/license/ScaffoldLibrary/Schemas.svg?style=for-the-badge
+[license-url]: https://github.com/ScaffoldLibrary/Schemas/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/matheus-cohen
 [product-screenshot]: images/gif_01.gif
