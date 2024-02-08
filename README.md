@@ -153,7 +153,8 @@ public class SampleSchema : Schema
 
 To create a `Schema` all you *REALLY* need to do is inherit from `Schema`. It will automatically appear on the dropdown options.
 
-![](images/screenshot_04.png)
+![](https://raw.githubusercontent.com/ScaffoldLibrary/Docs/main/Schemas/Images/screenshot_04.png)
+
 
 ### Using Schemas
 
@@ -196,7 +197,7 @@ public class Modifiers : CardTrait
 
 }
 ```
-![](images/screenshot_05.png)
+![](https://raw.githubusercontent.com/ScaffoldLibrary/Docs/main/Schemas/Images/screenshot_05.png)
 <br>
 <br>
 <br>
@@ -209,7 +210,7 @@ public class Breakable : Schema
 
 }
 ```
-![](images/screenshot_06.png)
+![](https://raw.githubusercontent.com/ScaffoldLibrary/Docs/main/Schemas/Images/screenshot_06.png)
 <br>
 <br>
 <br>
@@ -312,7 +313,7 @@ public class ModifierSchemaDrawer : SchemaDrawer
 `SchemaDrawer` can override a few options like the Header and Body, to create custom views:
 
 
-![](images/screenshot_03.png)
+![](https://raw.githubusercontent.com/ScaffoldLibrary/Docs/main/Schemas/Images/screenshot_03.png)
 
 
 
@@ -382,7 +383,7 @@ Project Link: [https://github.com/MgCohen/Schemas](https://github.com/MgCohen/Sc
 [license-url]: https://github.com/ScaffoldLibrary/Schemas/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/matheus-cohen
-[product-screenshot]: images/gif_01.gif
+[product-screenshot]: https://raw.githubusercontent.com/ScaffoldLibrary/Docs/main/Schemas/Images/gif_01.gif
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
