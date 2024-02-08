@@ -11,8 +11,6 @@ namespace Scaffold.Schemas.Editor
     [CustomEditor(typeof(SchemaObject), true)]
     public class SchemaObjectEditor : UnityEditor.Editor
     {
-        private SerializedProperty collectionProp;
-        private SchemaSet set;
         private List<Type> schemaOptions;
 
         protected virtual string[] PropertiesToIgnore => new string[]
@@ -23,25 +21,26 @@ namespace Scaffold.Schemas.Editor
 
         private void OnEnable()
         {
-            collectionProp = serializedObject.FindProperty("schemas.Collection");
-            set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
             schemaOptions = SchemaCacheUtility.GetDerivedTypes(typeof(Schema));
         }
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             DrawDefaultProperties();
             EditorGUILayout.Space(5);
             DrawSchemas();
             EditorGUILayout.Space(5);
             DrawControls();
+
             serializedObject.ApplyModifiedProperties();
-            serializedObject.Update();
         }
 
         private void DrawSchemas()
         {
-            if(collectionProp.arraySize == 0)
+            var collectionProp = serializedObject.FindProperty("schemas.Collection");
+            if (collectionProp.arraySize == 0)
             {
                 SchemaLayout.Divider(0, 0);
                 return;
@@ -87,6 +86,7 @@ namespace Scaffold.Schemas.Editor
 
         private void ShowSchemaMenu()
         {
+            SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
             var menu = new GenericMenu();
             for (int i = 0; i < schemaOptions.Count; i++)
             {
@@ -106,6 +106,7 @@ namespace Scaffold.Schemas.Editor
 
         public void AddSchema(Type schema)
         {
+            SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
             Undo.RecordObject(target, "adding schema to object");
             set.AddSchema(schema);
             Refresh();
@@ -113,6 +114,7 @@ namespace Scaffold.Schemas.Editor
 
         public void RemoveSchema(object schema)
         {
+            SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
             Undo.RecordObject(target, "removing schema from object");
             set.RemoveSchema(schema.GetType());
             Refresh();
@@ -125,4 +127,4 @@ namespace Scaffold.Schemas.Editor
             serializedObject.Update();
         }
     }
-}
+
