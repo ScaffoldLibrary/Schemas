@@ -1,14 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scaffold.Schemas
 {
-
     public abstract class SchemaObject : ScriptableObject
     {
         public IReadOnlyList<Schema> Schemas => schemas.Collection;
-        [SerializeReference] public SchemaSet schemas = new SchemaSet();
+        [SerializeReference] private SchemaSet schemas = new SchemaSet();
 
         public bool TryGetSchema<T>(out T schema) where T : Schema
         {
@@ -25,17 +25,32 @@ namespace Scaffold.Schemas
 
         public bool AddSchema<T>() where T : Schema
         {
-            return schemas.AddSchema(typeof(T));
+            return AddSchema(typeof(T));
+        }
+
+        public bool AddSchema(Type type)
+        {
+            return schemas.AddSchema(type);
         }
 
         public bool RemoveSchema<T>() where T : Schema
         {
-            return schemas.RemoveSchema(typeof(T));
+            return RemoveSchema(typeof(T));
+        }
+
+        public bool RemoveSchema(Type type)
+        {
+            return schemas.RemoveSchema(type);
         }
 
         public bool HasSchema<T>() where T : Schema
         {
-            return schemas.Contains(typeof(T));
+            return HasSchema(typeof(T));
+        }
+
+        public bool HasSchema(Type type)
+        {
+            return schemas.Contains(type);
         }
     }
 }
