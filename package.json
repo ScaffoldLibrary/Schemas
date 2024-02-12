@@ -1,7 +1,7 @@
 {
   "name": "com.scaffold.schemas",
   "displayName": "Schemas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Schemas is a extension of ScriptableObjects that allow you to have component-like objects nested into your SO's",
   "keywords": [
     "scriptableobjects",
