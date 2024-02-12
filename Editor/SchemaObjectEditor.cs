@@ -127,4 +127,4 @@ namespace Scaffold.Schemas.Editor
             serializedObject.Update();
         }
     }
-
+}
