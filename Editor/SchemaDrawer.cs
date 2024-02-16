@@ -52,7 +52,7 @@ namespace Scaffold.Schemas.Editor
         private void DeleteSchema()
         {
             SchemaDrawerContainer.instance.ReleaseDrawer(this);
-            Editor.RemoveSchema(Property.boxedValue);
+            Editor.RemoveSchema(Property.boxedValue as Schema);
             IsExpanded = false;
             Expired = true;
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Scaffold.Schemas
@@ -15,6 +16,11 @@ namespace Scaffold.Schemas
             bool contains = schemas.TryGetSchema(typeof(T), out Schema rawSchema);
             schema = (T)rawSchema;
             return contains;
+        }
+
+        public List<T> GetSchemas<T>() where T: Schema
+        {
+            return schemas.GetSchemas(typeof(T)).Cast<T>().ToList();
         }
 
         public T GetSchema<T>() where T : Schema
@@ -40,7 +46,13 @@ namespace Scaffold.Schemas
 
         public bool RemoveSchema(Type type)
         {
-            return schemas.RemoveSchema(type);
+            Schema schema = Schemas.FirstOrDefault(s => s.GetType().IsAssignableFrom(type));
+            return schemas.RemoveSchema(schema);
+        }
+
+        public bool RemoveSchema(Schema schema)
+        {
+            return schemas.RemoveSchema(schema);
         }
 
         public bool HasSchema<T>() where T : Schema

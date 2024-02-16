@@ -87,19 +87,12 @@ namespace Scaffold.Schemas.Editor
         private void ShowSchemaMenu()
         {
             SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
-            var menu = new GenericMenu();
+            var menu = new GenericMenu ();
             for (int i = 0; i < schemaOptions.Count; i++)
             {
                 var type = schemaOptions[i];
                 var menuOption = new GUIContent(SchemaCacheUtility.GetTypeGroupPath(type), "");
-                if (!set.Contains(type))
-                {
-                    menu.AddItem(menuOption, false, () => AddSchema(type));
-                }
-                else
-                {
-                    menu.AddDisabledItem(menuOption, true);
-                }
+                menu.AddItem(menuOption, false, () => AddSchema(type));
             }
             menu.ShowAsContext();
         }
@@ -112,11 +105,11 @@ namespace Scaffold.Schemas.Editor
             Refresh();
         }
 
-        public void RemoveSchema(object schema)
+        public void RemoveSchema(Schema schema)
         {
             SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
             Undo.RecordObject(target, "removing schema from object");
-            set.RemoveSchema(schema.GetType());
+            set.RemoveSchema(schema);
             Refresh();
         }
 

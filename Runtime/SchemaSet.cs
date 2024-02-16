@@ -16,7 +16,7 @@ namespace Scaffold.Schemas
             {
                 if (types == null)
                 {
-                    types = Collection.Select(s => s.GetType()).ToList();
+                    types = Collection.Where(s => s != null).Select(s => s?.GetType()).ToList();
                 }
                 return types;
             }
@@ -31,21 +31,15 @@ namespace Scaffold.Schemas
                 Debug.Log($"schema object you are trying to add does not inherint from SCHEMA");
                 return false;
             }
-            if (Types.Contains(schema))
-            {
-                Debug.Log($"object already contains schema of type {schema}");
-                return false;
-            }
             Types.Add(schema);
             Collection.Add((Schema)Activator.CreateInstance(schema));
             return true;
         }
 
-        public bool RemoveSchema(Type schema)
+        public bool RemoveSchema(Schema schema)
         {
-            int removedCount = Collection.RemoveAll(s => s.GetType() == schema);
-            Types.Remove(schema);
-            return removedCount > 0;
+            Types.Remove(schema.GetType());
+            return Collection.Remove(schema);
         }
 
         public bool TryGetSchema<TSchema>(out TSchema schema) where TSchema : Schema
@@ -65,6 +59,11 @@ namespace Scaffold.Schemas
 
             schema = Collection.Find(t => t.GetType() == schemaType);
             return true;
+        }
+
+        public List<Schema> GetSchemas(Type schema)
+        {
+            return Collection.Where(s => schema.IsAssignableFrom(s?.GetType())).ToList();
         }
 
         public bool Contains(Type schema)
