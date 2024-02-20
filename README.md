@@ -91,7 +91,7 @@ Schemas is here to help! a quick, plug-and-play way to add simple data structure
 
 Just inherit from SchemaObject instead of ScriptableObject, and that's it! you got yourself schemas.
 
-```
+```csharp
 public class SampleObject : SchemaObject
 {
 
@@ -129,7 +129,7 @@ Schemas is based on 2 main classes, the `SchemaObject` and the `Schema`.
 The `SchemaObject` is pretty much a wrapper around ScriptableObject to hold and access whatever Schema you may want. All that is needed is for your `ScriptableObjects` to start Inherting from `SchemaObjects` and it's good to go!
 
 
-```
+```csharp
 public class SampleObject : SchemaObject
 {
   //nothing else needed!
@@ -142,7 +142,7 @@ There is no rules for what type of data you will put in your schema, it really i
 
 The reason we have a empty `Schema` class instead of a Interface is to avoid developers trying to put MonoBehaviours or SO's as schemas, As we are leveraging unity's SerializeReference which does not support reference to those types. 
 
-```
+```csharp
 public class SampleSchema : Schema
 {
   //any variable can go in here
@@ -161,7 +161,7 @@ To create a `Schema` all you *REALLY* need to do is inherit from `Schema`. It wi
 Your `SchemaObject` holds the reference to any schema that you may have added to it! usage is very similar to what you would experience with `MonoBehaviours`
 
 *MonoBehaviours*:
-```
+```csharp
     public void SomeMethod(GameObject myObj)
     {
         SampleComponent component = myObj.GetComponent<SampleComponent>();
@@ -173,7 +173,7 @@ Your `SchemaObject` holds the reference to any schema that you may have added to
 ```
 
 *Schemas*:
-```
+```csharp
     public void SomeMethod(SchemaObject myObj)
     {
         SampleSchema schema = myObj.GetSchema<SampleSchema>();
@@ -190,7 +190,7 @@ To help customize your schemas, there are 3 utility attributes
 
 `SchemaDescriptionAttribute`: Will provide a tooltip description for your schema
 
-```
+```csharp
 [SchemaDescription("Add/Subtract values from player stats while equipped")]
 public class Modifiers : CardTrait
 {
@@ -203,7 +203,7 @@ public class Modifiers : CardTrait
 <br>
 `SchemaMenuGroupAttribute`: Will group your schemas on the "Add Schema" dropdown
 
-```
+```csharp
 [SchemaMenuGroup("MyGroup")]
 public class Breakable : Schema
 {
@@ -216,7 +216,7 @@ public class Breakable : Schema
 <br>
 `SchemaCustomDrawerAttribute`: Mark a class to be used as a custom drawer for a schema
 
-```
+```csharp
 [SchemaCustomDrawer(typeof(Modifiers))]
 public class ModifierSchemaDrawer : SchemaDrawer
 {
@@ -238,7 +238,7 @@ Through the custom inspector of `SchemaObjects`, `Schemas` are not drawn as any 
 
 to create a custom drawer for a Schema, you can simply create a class inheriting from `SchemaDrawer` and apply the attribute:
 
-```
+```csharp
 [SchemaMenuGroup("CardTrait")]
 [SchemaDescription("Add/Subtract values from player stats while equipped")]
 public class Modifiers : CardTrait
