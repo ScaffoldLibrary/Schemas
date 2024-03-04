@@ -2,6 +2,7 @@
 
 namespace Scaffold.Schemas
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class SchemaMenuGroupAttribute : Attribute
     {
         public SchemaMenuGroupAttribute(string path)
