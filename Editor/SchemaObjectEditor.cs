@@ -11,7 +11,7 @@ namespace Scaffold.Schemas.Editor
     [CustomEditor(typeof(SchemaObject), true)]
     public class SchemaObjectEditor : UnityEditor.Editor
     {
-        private List<Type> schemaOptions;
+        private List<Type> schemaOptions = new List<Type>();
 
         protected virtual string[] PropertiesToIgnore => new string[]
         {
@@ -76,10 +76,13 @@ namespace Scaffold.Schemas.Editor
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (EditorGUILayout.DropdownButton(new GUIContent("Add Schema", "Add new schema to this object."), FocusType.Keyboard, SchemaStyles.CenterButton))
+            EditorGUI.BeginDisabledGroup(schemaOptions.Count <= 0);
+            string buttonText = schemaOptions.Count > 0 ? "Add Schema" : "No Schema option available";
+            if (EditorGUILayout.DropdownButton(new GUIContent(buttonText, "Add new schema to this object."), FocusType.Keyboard, SchemaStyles.CenterButton))
             {
                 ShowSchemaMenu();
             }
+            EditorGUI.EndDisabledGroup();
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
         }
