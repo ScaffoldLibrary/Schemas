@@ -22,6 +22,12 @@ namespace Scaffold.Schemas.Editor
         private void OnEnable()
         {
             schemaOptions = SchemaCacheUtility.GetDerivedTypes(typeof(Schema));
+            Setup();
+        }
+
+        protected virtual void Setup()
+        {
+
         }
 
         public override void OnInspectorGUI()
@@ -33,7 +39,6 @@ namespace Scaffold.Schemas.Editor
             DrawSchemas();
             EditorGUILayout.Space(5);
             DrawControls();
-
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -66,7 +71,7 @@ namespace Scaffold.Schemas.Editor
             }
         }
 
-        protected void DrawDefaultProperties()
+        protected virtual void DrawDefaultProperties()
         {
             DrawPropertiesExcluding(serializedObject, PropertiesToIgnore);
         }
