@@ -5,9 +5,9 @@ using UnityEngine;
 
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RequiredSchemaAttribute : Attribute
+public class RequireSchemaAttribute : Attribute
 {
-    public RequiredSchemaAttribute(params Type[] schemaTypes)
+    public RequireSchemaAttribute(params Type[] schemaTypes)
     {
         SchemaTypes = schemaTypes;
     }

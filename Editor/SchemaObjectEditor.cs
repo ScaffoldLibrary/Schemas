@@ -19,15 +19,32 @@ namespace Scaffold.Schemas.Editor
             "schemas"
         };
 
-        private void OnEnable()
+        protected void OnEnable()
         {
             schemaOptions = SchemaCacheUtility.GetDerivedTypes(typeof(Schema));
+            ValidateTemplate();
             Setup();
         }
 
         protected virtual void Setup()
         {
 
+        }
+
+        private void ValidateTemplate()
+        {
+            RequireSchemaAttribute requiredSchemas = target.GetType().GetCustomAttribute<RequireSchemaAttribute>(true);
+            if (requiredSchemas != null)
+            {
+                SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
+                foreach (Type schemaType in requiredSchemas.SchemaTypes)
+                {
+                    if (!set.Contains(schemaType))
+                    {
+                        AddSchema(schemaType);
+                    }
+                }
+            }
         }
 
         public override void OnInspectorGUI()
@@ -95,7 +112,7 @@ namespace Scaffold.Schemas.Editor
         private void ShowSchemaMenu()
         {
             SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
-            var menu = new GenericMenu ();
+            var menu = new GenericMenu();
             for (int i = 0; i < schemaOptions.Count; i++)
             {
                 var type = schemaOptions[i];
