@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RequireSchemaAttribute : Attribute
+namespace Scaffold.Schemas
 {
-    public RequireSchemaAttribute(params Type[] schemaTypes)
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+    public class RequireSchemaAttribute : Attribute
     {
-        SchemaTypes = schemaTypes;
-    }
+        public RequireSchemaAttribute(params Type[] schemaTypes)
+        {
+            SchemaTypes = schemaTypes;
+        }
 
-    public Type[] SchemaTypes = new Type[0]; 
+        public Type[] SchemaTypes = new Type[0];
+    }
 }
