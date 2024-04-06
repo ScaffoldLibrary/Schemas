@@ -145,7 +145,7 @@ The reason we have a empty `Schema` class instead of a Interface is to avoid dev
 ```csharp
 public class SampleSchema : Schema
 {
-  //any variable can go in here
+    //any variable can go in here
 }
 ```
 
@@ -164,11 +164,11 @@ Your `SchemaObject` holds the reference to any schema that you may have added to
 ```csharp
 public void SomeMethod(GameObject myObj)
 {
-  SampleComponent component = myObj.GetComponent<SampleComponent>();
-  if(component != null)
-  {
-    //do something with component
-  }
+    SampleComponent component = myObj.GetComponent<SampleComponent>();
+    if (component != null)
+    {
+        //do something with component
+    }
 }
 ```
 
@@ -176,11 +176,11 @@ public void SomeMethod(GameObject myObj)
 ```csharp
 public void SomeMethod(SchemaObject myObj)
 {
-  SampleSchema schema = myObj.GetSchema<SampleSchema>();
-  if(schema != null)
-  {
-    //do something with schema
-  }
+    SampleSchema schema = myObj.GetSchema<SampleSchema>();
+    if (schema != null)
+    {
+        //do something with schema
+    }
 }
 ```
 
@@ -243,70 +243,68 @@ to create a custom drawer for a Schema, you can simply create a class inheriting
 [SchemaDescription("Add/Subtract values from player stats while equipped")]
 public class Modifiers : CardTrait
 {
-  public List<StatModifier> changes = new List<StatModifier>();
+    public List<StatModifier> changes = new List<StatModifier>();
 
-  [Serializable]
-  public class StatModifier
-  {
-    public Stats Stat;
-    public int Value;
-  }
+    [Serializable]
+    public class StatModifier
+    {
+        public Stats Stat;
+        public int Value;
+    }
 }
 
 [SchemaCustomDrawer(typeof(Modifiers))]
 public class ModifierSchemaDrawer : SchemaDrawer
 {
-  public ModifierSchemaDrawer(SerializedProperty property, SchemaObjectEditor editor) : base(property, editor)
-  {
-
-  }
-
-  private SerializedProperty modifiersProp;
-
-  public override void UpdateSerializedProperty(SerializedProperty property)
-  {
-    base.UpdateSerializedProperty(property);
-    modifiersProp = property.FindPropertyRelative("changes");
-  }
-
-  public override void DrawBody()
-  {
-    EditorGUILayout.Space(3);
-    for (int i = 0; i < modifiersProp.arraySize; i++)
+    public ModifierSchemaDrawer(SerializedProperty property, SchemaObjectEditor editor) : base(property, editor)
     {
-      var prop = modifiersProp.GetArrayElementAtIndex(i);
-      EditorGUILayout.BeginHorizontal();
-      EditorGUILayout.PropertyField(prop.FindPropertyRelative("Stat"), GUIContent.none);
-      EditorGUILayout.PropertyField(prop.FindPropertyRelative("Value"), GUIContent.none);
-      if (GUILayout.Button("X", GUILayout.Width(30)))
-      {
-        RemoveModifier(i);
-      }
-      EditorGUILayout.EndHorizontal();
+
     }
-    if (GUILayout.Button("Add"))
+
+    private SerializedProperty modifiersProp;
+
+    public override void UpdateSerializedProperty(SerializedProperty property)
     {
-      AddModifier();
+        base.UpdateSerializedProperty(property);
+        modifiersProp = property.FindPropertyRelative("changes");
     }
-    EditorGUILayout.Space(3);
-  }
 
-  private void AddModifier()
-  {
-    var index = modifiersProp.arraySize;
-    modifiersProp.InsertArrayElementAtIndex(index);
-    modifiersProp.GetArrayElementAtIndex(index).boxedValue = new Modifiers.StatModifier();
-    Editor.Refresh();
-  }
+    public override void DrawBody()
+    {
+        EditorGUILayout.Space(3);
+        for (int i = 0; i < modifiersProp.arraySize; i++)
+        {
+            var prop = modifiersProp.GetArrayElementAtIndex(i);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(prop.FindPropertyRelative("Stat"), GUIContent.none);
+            EditorGUILayout.PropertyField(prop.FindPropertyRelative("Value"), GUIContent.none);
+            if (GUILayout.Button("X", GUILayout.Width(30)))
+            {
+                RemoveModifier(i);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+        if (GUILayout.Button("Add"))
+        {
+            AddModifier();
+        }
+        EditorGUILayout.Space(3);
+    }
 
-  private void RemoveModifier(int propIndex)
-  {
-    modifiersProp.DeleteArrayElementAtIndex(propIndex);
-    Editor.Refresh();
-  }
+    private void AddModifier()
+    {
+        var index = modifiersProp.arraySize;
+        modifiersProp.InsertArrayElementAtIndex(index);
+        modifiersProp.GetArrayElementAtIndex(index).boxedValue = new Modifiers.StatModifier();
+        Editor.Refresh();
+    }
+
+    private void RemoveModifier(int propIndex)
+    {
+        modifiersProp.DeleteArrayElementAtIndex(propIndex);
+        Editor.Refresh();
+    }
 }
-
-
 ```
 
 `SchemaDrawer` can override a few options like the Header and Body, to create custom views:
