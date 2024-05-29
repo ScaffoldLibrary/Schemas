@@ -32,7 +32,7 @@ namespace Scaffold.Schemas.Editor
         {
             Type schemaType = Property.boxedValue.GetType();
             SchemaDescriptionAttribute description = schemaType.GetCustomAttribute<SchemaDescriptionAttribute>(true);
-            if(description != null)
+            if (description != null)
             {
                 SchemaDescription = description.Description;
             }
@@ -41,20 +41,6 @@ namespace Scaffold.Schemas.Editor
         public virtual void UpdateSerializedProperty(SerializedProperty property)
         {
             Property = property;
-        }
-
-        private void ToggleExpanded()
-        {
-            IsExpanded = !IsExpanded;
-            Property.isExpanded = IsExpanded;
-        }
-
-        private void DeleteSchema()
-        {
-            SchemaDrawerContainer.instance.ReleaseDrawer(this);
-            Editor.RemoveSchema(Property.boxedValue as Schema);
-            IsExpanded = false;
-            Expired = true;
         }
 
         public virtual void Draw()
@@ -72,6 +58,21 @@ namespace Scaffold.Schemas.Editor
         {
             SchemaLayout.Header(this, ToggleExpanded, DeleteSchema);
         }
+
+        private void ToggleExpanded()
+        {
+            IsExpanded = !IsExpanded;
+            Property.isExpanded = IsExpanded;
+        }
+
+        private void DeleteSchema()
+        {
+            SchemaDrawerContainer.instance.ReleaseDrawer(this);
+            Editor.RemoveSchema(Property.boxedValue as Schema);
+            IsExpanded = false;
+            Expired = true;
+        }
+
 
         public virtual void DrawBody()
         {

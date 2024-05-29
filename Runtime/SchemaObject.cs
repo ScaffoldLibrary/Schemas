@@ -64,5 +64,10 @@ namespace Scaffold.Schemas
         {
             return schemas.Contains(type);
         }
+
+        public void Reset()
+        {
+            Debug.Log(1);
+        }
     }
 }

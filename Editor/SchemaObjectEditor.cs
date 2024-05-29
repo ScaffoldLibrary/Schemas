@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
@@ -13,16 +11,25 @@ namespace Scaffold.Schemas.Editor
     {
         private List<Type> schemaOptions = new List<Type>();
 
+        private SchemaValidator validator;
+
         protected virtual string[] PropertiesToIgnore => new string[]
         {
             "m_Script",
             "schemas"
         };
 
-        private void OnEnable()
+        protected void OnEnable()
         {
-            schemaOptions = SchemaCacheUtility.GetDerivedTypes(typeof(Schema));
+            ValidateSchemas();
             Setup();
+        }
+
+        private void ValidateSchemas()
+        {
+            validator = new SchemaValidator(target as SchemaObject, serializedObject, this);
+            validator.Validate();
+            schemaOptions = validator.GetSchemaOptions();
         }
 
         protected virtual void Setup()
@@ -39,6 +46,7 @@ namespace Scaffold.Schemas.Editor
             DrawSchemas();
             EditorGUILayout.Space(5);
             DrawControls();
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -95,12 +103,22 @@ namespace Scaffold.Schemas.Editor
         private void ShowSchemaMenu()
         {
             SchemaSet set = serializedObject.FindProperty("schemas").boxedValue as SchemaSet;
-            var menu = new GenericMenu ();
+            var menu = new GenericMenu();
             for (int i = 0; i < schemaOptions.Count; i++)
             {
                 var type = schemaOptions[i];
                 var menuOption = new GUIContent(SchemaCacheUtility.GetTypeGroupPath(type), "");
-                menu.AddItem(menuOption, false, () => AddSchema(type));
+                bool canAdd = validator.CanAddType(type);
+
+                if (canAdd)
+                {
+                    menu.AddItem(menuOption, false, () => AddSchema(type));
+                }
+                else
+                {
+                    menu.AddDisabledItem(menuOption, true);
+                }
+                
             }
             menu.ShowAsContext();
         }
