@@ -67,7 +67,6 @@ namespace Scaffold.Schemas
 
         public void Reset()
         {
-            Debug.Log(1);
         }
     }
 }
