@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -7,7 +7,11 @@ using UnityEngine;
 namespace Scaffold.Schemas.Editor
 {
     [CustomEditor(typeof(SchemaObject), true)]
+#if ODIN_INSPECTOR_3_1
+    public class SchemaObjectEditor : Sirenix.OdinInspector.Editor.OdinEditor
+#else
     public class SchemaObjectEditor : UnityEditor.Editor
+#endif
     {
         private List<Type> schemaOptions = new List<Type>();
 
@@ -19,8 +23,14 @@ namespace Scaffold.Schemas.Editor
             "schemas"
         };
 
+#if ODIN_INSPECTOR_3_1
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+#else
         protected void OnEnable()
         {
+#endif
             ValidateSchemas();
             Setup();
         }
@@ -40,8 +50,19 @@ namespace Scaffold.Schemas.Editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-
+            
+#if ODIN_INSPECTOR_3_1
+            EditorGUI.BeginChangeCheck();
+            {
+                DrawDefaultInspector();
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                Refresh();
+            }
+#else
             DrawDefaultProperties();
+#endif
             EditorGUILayout.Space(5);
             DrawSchemas();
             EditorGUILayout.Space(5);
@@ -81,6 +102,7 @@ namespace Scaffold.Schemas.Editor
 
         protected virtual void DrawDefaultProperties()
         {
+            
             DrawPropertiesExcluding(serializedObject, PropertiesToIgnore);
         }
 

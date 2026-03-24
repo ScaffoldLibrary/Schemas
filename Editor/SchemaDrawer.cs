@@ -1,23 +1,41 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UnityEngine;
+
+#if ODIN_INSPECTOR_3_1
+using Sirenix.OdinInspector.Editor;
+#endif
 
 namespace Scaffold.Schemas.Editor
 {
     [SchemaCustomDrawer(typeof(Schema))]
     public class SchemaDrawer
     {
+#if ODIN_INSPECTOR_3_1
+        private PropertyTree objectTree;
+#endif
+        
         public SchemaDrawer(SerializedProperty property, SchemaObjectEditor editor)
         {
             this.Editor = editor;
             this.Property = property;
             this.IsExpanded = property.isExpanded;
             this.SchemaName = SchemaCacheUtility.GetTypeDisplayName(property.boxedValue.GetType());
+
+#if ODIN_INSPECTOR_3_1
+            objectTree = PropertyTree.Create(property.boxedValue);
+#endif
+            
             CheckAttributes();
         }
+
+#if ODIN_INSPECTOR_3_1
+        ~SchemaDrawer()
+        {
+            objectTree.Dispose();
+        }
+#endif
 
         public SerializedProperty Property { get; set; }
         public string SchemaName { get; protected set; }
@@ -76,11 +94,22 @@ namespace Scaffold.Schemas.Editor
 
         public virtual void DrawBody()
         {
+#if ODIN_INSPECTOR_3_1
+            EditorGUI.BeginChangeCheck();
+            {
+                objectTree.Draw(false);
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                Refresh();
+            }
+#else
             var childProps = GetChildProperties(Property);
             foreach (var child in childProps)
             {
                 EditorGUILayout.PropertyField(child, true);
             }
+#endif
             EditorGUILayout.Space(3);
         }
 
@@ -97,6 +126,13 @@ namespace Scaffold.Schemas.Editor
 
                 yield return childProperty.Copy();
             }
+        }
+
+        public void Refresh()
+        {
+            Property.serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(Property.serializedObject.targetObject);
+            Property.serializedObject.Update();
         }
     }
 }

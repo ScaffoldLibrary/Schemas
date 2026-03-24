@@ -57,7 +57,7 @@ namespace Scaffold.Schemas
                 return false;
             }
 
-            schema = Collection.Find(t => t.GetType() == schemaType);
+            schema = Collection.Find(t => t != null && t.GetType() == schemaType);
             return true;
         }
 

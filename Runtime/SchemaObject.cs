@@ -9,6 +9,7 @@ namespace Scaffold.Schemas
     public abstract class SchemaObject : ScriptableObject
     {
         public IReadOnlyList<Schema> Schemas => schemas.Collection;
+        [HideInInspector]
         [SerializeReference] private SchemaSet schemas = new SchemaSet();
 
         public bool TryGetSchema<T>(out T schema) where T : Schema
